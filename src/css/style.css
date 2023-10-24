@@ -35,6 +35,7 @@ body {
 }
 
 .task{
+    position: relative;
     margin: 5px;
     padding: 10px;
     background-color: #ffffff;
@@ -46,6 +47,19 @@ body {
 .input-task {
     cursor: text;
 }
+
+.close-button {
+    color: #888888;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  .task:hover .close-button {
+    display: block;
+  }
 
 .add-task-button {
 	color: #888888;

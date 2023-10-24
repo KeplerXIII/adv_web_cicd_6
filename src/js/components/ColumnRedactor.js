@@ -29,7 +29,6 @@ export class ColumnRedactor {
     return `
           <div class="column">
               <h2 class="header">test name</h2>
-              <div class="task">Test task</div>
               <input class="task input-task hidden" value="default_task">
               <button class="add-task-button">+ Add another card</button>
               <div class="button-apply-container hidden">
@@ -64,14 +63,23 @@ export class ColumnRedactor {
     return this.column.querySelector('.header')
   }
 
+  get closeBtn () {
+    return this.column.querySelector('.close-button')
+  }
+
   renderColumn () {
     this.board.insertAdjacentHTML('afterbegin', this.constructor.markUp)
     this.column = this.board.querySelector('.column')
   }
 
   createTask (taskText) {
-    const taskHTML = `<div class="task">${taskText}</div>`
-    this.addBtn.insertAdjacentHTML('beforebegin', taskHTML)
+    const taskHTML = `<div class="task"><span class="close-button">\u00D7</span>${taskText}</div>`
+    this.input.insertAdjacentHTML('beforebegin', taskHTML)
+    const newTask = this.input.previousElementSibling
+    const newCloseBtn = newTask.querySelector('.close-button')
+    newCloseBtn.addEventListener('click', (event) => {
+      event.target.parentElement.remove()
+    })
   }
 
   setName (name) {
