@@ -39,21 +39,16 @@ export class ColumnRedactor {
           const mouseUpItem = e.target
           if (mouseUpItem.parentElement.classList.contains('column')) {
             mouseUpItem.parentElement.insertBefore(actualElement, null)
-            actualElement.classList.remove('dragged')
-            document.removeEventListener('mousemove', onMouseMove)
-            document.removeEventListener('mouseup', onMouseUp)
-            actualElement.style.top = 0 + 'px'
-            actualElement.style.left = 0 + 'px'
-          } else {
-            actualElement.classList.remove('dragged')
-            actualElement.style.top = 0 + 'px'
-            actualElement.style.left = 0 + 'px'
-            actualElement = undefined
-            document.removeEventListener('mousemove', onMouseMove)
-            document.removeEventListener('mouseup', onMouseUp)
           }
+          actualElement.classList.remove('dragged')
+          document.removeEventListener('mousemove', onMouseMove)
+          document.removeEventListener('mouseup', onMouseUp)
+          actualElement.style.top = 0 + 'px'
+          actualElement.style.left = 0 + 'px'
+          actualElement = undefined
+          document.removeEventListener('mousemove', onMouseMove)
+          document.removeEventListener('mouseup', onMouseUp)
         }
-
         document.addEventListener('mousemove', onMouseMove)
         document.addEventListener('mouseup', onMouseUp)
       }
