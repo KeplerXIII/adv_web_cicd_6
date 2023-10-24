@@ -23,6 +23,39 @@ export class ColumnRedactor {
         toggleElements()
       }
     })
+
+    this.column.addEventListener('mousedown', (e) => {
+      let actualElement = e.target
+      if (actualElement.classList.contains('task')) {
+        e.preventDefault()
+        actualElement.classList.add('dragged')
+
+        const onMouseMove = (event) => {
+          actualElement.style.top = event.clientY + 'px'
+          actualElement.style.left = event.clientX + 'px'
+        }
+
+        const onMouseUp = (e) => {
+          const mouseUpItem = e.target
+          if (mouseUpItem.classList.contains('header')) {
+            mouseUpItem.parentElement.insertBefore(actualElement, this.addBtn)
+            actualElement.classList.remove('dragged')
+            document.removeEventListener('mousemove', onMouseMove)
+            document.removeEventListener('mouseup', onMouseUp)
+          } else {
+            actualElement.classList.remove('dragged')
+            actualElement.style.top = 0 + 'px'
+            actualElement.style.left = 0 + 'px'
+            actualElement = undefined
+            document.removeEventListener('mousemove', onMouseMove)
+            document.removeEventListener('mouseup', onMouseUp)
+          }
+        }
+
+        document.addEventListener('mousemove', onMouseMove)
+        document.addEventListener('mouseup', onMouseUp)
+      }
+    })
   }
 
   static get markUp () {

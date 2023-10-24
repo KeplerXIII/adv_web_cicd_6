@@ -44,6 +44,14 @@ body {
     cursor: pointer;
 }
 
+.task.dragged {
+    border-radius: 10px;
+    position: absolute;
+    z-index: 999;
+    pointer-events: none;
+    background: #fff;
+}
+
 .input-task {
     cursor: text;
 }
