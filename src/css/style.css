@@ -34,13 +34,17 @@ body {
     text-align: left;
 }
 
-.task {
+.task{
     margin: 5px;
     padding: 10px;
     background-color: #ffffff;
     border: 1px solid #c0c0c0;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.input-task {
+    cursor: text;
 }
 
 .add-task-button {

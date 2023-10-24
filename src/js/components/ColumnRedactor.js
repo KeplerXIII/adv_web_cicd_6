@@ -6,6 +6,23 @@ export class ColumnRedactor {
 
   init () {
     this.renderColumn()
+
+    const toggleElements = () => {
+      this.btnContainer.classList.toggle('hidden')
+      this.addBtn.classList.toggle('hidden')
+      this.input.classList.toggle('hidden')
+    }
+
+    this.addBtn.addEventListener('click', toggleElements)
+    this.cancelBtn.addEventListener('click', toggleElements)
+
+    this.applyBtn.addEventListener('click', () => {
+      const inputValue = this.input.value
+      if (inputValue) {
+        this.createTask(inputValue)
+        toggleElements()
+      }
+    })
   }
 
   static get markUp () {
@@ -13,6 +30,7 @@ export class ColumnRedactor {
           <div class="column">
               <h2 class="header">test name</h2>
               <div class="task">Test task</div>
+              <input class="task input-task hidden" value="default_task">
               <button class="add-task-button">+ Add another card</button>
               <div class="button-apply-container hidden">
                 <button class="apply-button">Add card</button>
@@ -30,6 +48,18 @@ export class ColumnRedactor {
     return this.column.querySelector('.add-task-button')
   }
 
+  get applyBtn () {
+    return this.column.querySelector('.apply-button')
+  }
+
+  get cancelBtn () {
+    return this.column.querySelector('.cancel-button')
+  }
+
+  get input () {
+    return this.column.querySelector('.input-task')
+  }
+
   get header () {
     return this.column.querySelector('.header')
   }
@@ -37,6 +67,11 @@ export class ColumnRedactor {
   renderColumn () {
     this.board.insertAdjacentHTML('afterbegin', this.constructor.markUp)
     this.column = this.board.querySelector('.column')
+  }
+
+  createTask (taskText) {
+    const taskHTML = `<div class="task">${taskText}</div>`
+    this.addBtn.insertAdjacentHTML('beforebegin', taskHTML)
   }
 
   setName (name) {
