@@ -60,6 +60,12 @@ export class ColumnRedactor {
           const mouseUpItem = e.target
           if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column') && !mouseUpItem.classList.contains('header')) {
             mouseUpItem.parentElement.insertBefore(actualElement, e.target)
+            const tempArray = []
+            mouseUpItem.parentElement.querySelectorAll('.task').forEach(element => {
+              tempArray.push(element.textContent.slice(1))
+              console.log(tempArray)
+              localStorage.setItem(mouseUpItem.parentElement.querySelector('.header').textContent, JSON.stringify(tempArray))
+            })
           }
           actualElement.style.top = 0 + 'px'
           actualElement.style.left = 0 + 'px'
@@ -70,7 +76,7 @@ export class ColumnRedactor {
           actualElement = undefined
           this.taskArray.length = 0
           this.tasks.forEach(element => {
-            this.taskArray.push(element.textContent)
+            this.taskArray.push(element.textContent.slice(1))
           })
           this.saveLocal()
         }
