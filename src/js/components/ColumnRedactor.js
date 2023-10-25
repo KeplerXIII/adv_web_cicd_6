@@ -2,6 +2,7 @@ export class ColumnRedactor {
   constructor (board) {
     this.board = board
     this.column = null
+    this.taskArray = []
   }
 
   init () {
@@ -57,7 +58,6 @@ export class ColumnRedactor {
 
         const onMouseUp = (e) => {
           const mouseUpItem = e.target
-          console.log(mouseUpItem)
           if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column') && !mouseUpItem.classList.contains('header')) {
             mouseUpItem.parentElement.insertBefore(actualElement, e.target)
           }
@@ -68,6 +68,11 @@ export class ColumnRedactor {
           document.removeEventListener('mouseup', onMouseUp)
           this.hidePlaceholder(e)
           actualElement = undefined
+          this.taskArray.length = 0
+          this.tasks.forEach(element => {
+            this.taskArray.push(element.textContent)
+          })
+          this.saveLocal()
         }
 
         document.addEventListener('mousemove', onMouseMove)
@@ -80,7 +85,7 @@ export class ColumnRedactor {
     return `
           <div class="column" draggable="true">
               <h2 class="header">test name</h2>
-              <textarea class="task input-task hidden" style="max-width: 270px; min-width: 270px;">Задачка</textarea>
+              <textarea class="input-task hidden" style="max-width: 270px; min-width: 270px;">Задачка</textarea>
               <button class="add-task-button" draggable="true">+ Add another card</button>
               <div class="button-apply-container hidden">
                 <button class="apply-button">Add card</button>
@@ -88,6 +93,10 @@ export class ColumnRedactor {
               </div>
           </div>
           `
+  }
+
+  get tasks () {
+    return this.column.querySelectorAll('.task')
   }
 
   get btnContainer () {
@@ -128,8 +137,15 @@ export class ColumnRedactor {
     this.input.insertAdjacentHTML('beforebegin', taskHTML)
     const newTask = this.input.previousElementSibling
     const newCloseBtn = newTask.querySelector('.close-button')
+    this.taskArray.push(taskText)
+    this.saveLocal()
     newCloseBtn.addEventListener('click', (event) => {
       event.target.parentElement.remove()
+      const index = this.taskArray.indexOf(taskText)
+      if (index !== -1) {
+        this.taskArray.splice(index, 1)
+        this.saveLocal()
+      }
     })
   }
 
@@ -154,5 +170,17 @@ export class ColumnRedactor {
 
   setName (name) {
     this.header.textContent = name
+  }
+
+  saveLocal () {
+    localStorage.setItem(this.header.textContent, JSON.stringify(this.taskArray))
+  }
+
+  restoreData () {
+    const storeData = localStorage.getItem(this.header.textContent)
+    const storeArray = JSON.parse(storeData)
+    storeArray.forEach(element => {
+      this.createTask(element)
+    })
   }
 }
