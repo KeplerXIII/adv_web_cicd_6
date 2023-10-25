@@ -26,7 +26,7 @@ export class ColumnRedactor {
 
     this.column.addEventListener('mousedown', (e) => {
       let actualElement = e.target
-      if (actualElement.classList.contains('task') && e.button === 0) {
+      if (actualElement && actualElement.classList && actualElement.classList.contains('task') && e.button === 0) {
         e.preventDefault()
         actualElement.classList.add('dragged')
 
@@ -37,7 +37,7 @@ export class ColumnRedactor {
 
         const onMouseUp = (e) => {
           const mouseUpItem = e.target
-          if (mouseUpItem.parentElement.classList.contains('column')) {
+          if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column')) {
             mouseUpItem.parentElement.insertBefore(actualElement, null)
           }
           actualElement.classList.remove('dragged')
@@ -46,8 +46,6 @@ export class ColumnRedactor {
           actualElement.style.top = 0 + 'px'
           actualElement.style.left = 0 + 'px'
           actualElement = undefined
-          document.removeEventListener('mousemove', onMouseMove)
-          document.removeEventListener('mouseup', onMouseUp)
         }
         document.addEventListener('mousemove', onMouseMove)
         document.addEventListener('mouseup', onMouseUp)
