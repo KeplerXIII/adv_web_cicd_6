@@ -26,7 +26,9 @@ export class ColumnRedactor {
 
     this.column.addEventListener('mousedown', (e) => {
       let actualElement = e.target
+
       if (actualElement && actualElement.classList && actualElement.classList.contains('task') && !actualElement.classList.contains('input-task') && e.button === 0) {
+        const height = actualElement.offsetHeight
         e.preventDefault()
 
         const shiftX = e.clientX - actualElement.getBoundingClientRect().left
@@ -44,19 +46,29 @@ export class ColumnRedactor {
 
         const onMouseMove = (e) => {
           moveAt(e.pageX, e.pageY)
+          const underMouseObj = e.target
+          if (document.querySelector('.placeholder')) {
+            this.hidePlaceholder(e)
+          }
+          if (underMouseObj.parentElement && underMouseObj.parentElement.classList.contains('column') && !underMouseObj.classList.contains('header')) {
+            if (!underMouseObj.parentElement.querySelector('.placeholder')) {
+              console.log(underMouseObj.parentElement.querySelector('.placeholder'))
+              this.showPlaceholder(e, height)
+            }
+          }
         }
 
         const onMouseUp = (e) => {
           const mouseUpItem = e.target
-          console.log(mouseUpItem)
-          if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column')) {
-            mouseUpItem.parentElement.insertBefore(actualElement, null)
+          if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column') && !mouseUpItem.classList.contains('header')) {
+            mouseUpItem.parentElement.insertBefore(actualElement, e.target)
           }
           actualElement.style.top = 0 + 'px'
           actualElement.style.left = 0 + 'px'
           actualElement.classList.remove('dragged')
           document.removeEventListener('mousemove', onMouseMove)
           document.removeEventListener('mouseup', onMouseUp)
+          this.hidePlaceholder(e)
           actualElement = undefined
         }
 
@@ -68,10 +80,10 @@ export class ColumnRedactor {
 
   static get markUp () {
     return `
-          <div class="column">
+          <div class="column" draggable="true">
               <h2 class="header">test name</h2>
               <textarea class="task input-task hidden" style="max-width: 270px; min-width: 270px;">Задачка</textarea>
-              <button class="add-task-button">+ Add another card</button>
+              <button class="add-task-button" draggable="true">+ Add another card</button>
               <div class="button-apply-container hidden">
                 <button class="apply-button">Add card</button>
                 <button class="cancel-button">Cancel</button>
@@ -114,13 +126,32 @@ export class ColumnRedactor {
   }
 
   createTask (taskText) {
-    const taskHTML = `<div class="task"><span class="close-button">\u00D7</span>${taskText}</div>`
+    const taskHTML = `<div class="task" draggable="true"><span class="close-button">\u00D7</span>${taskText}</div>`
     this.input.insertAdjacentHTML('beforebegin', taskHTML)
     const newTask = this.input.previousElementSibling
     const newCloseBtn = newTask.querySelector('.close-button')
     newCloseBtn.addEventListener('click', (event) => {
       event.target.parentElement.remove()
     })
+  }
+
+  showPlaceholder (e, height) {
+    e.preventDefault()
+    const targetItem = e.target
+    if (targetItem.parentElement && targetItem.parentElement.classList.contains('column') && !targetItem.classList.contains('header')) {
+      const placeholder = document.createElement('div')
+      placeholder.classList.add('placeholder')
+      placeholder.textContent = 'куку'
+      placeholder.style.height = height + 'px'
+      targetItem.parentElement.insertBefore(placeholder, e.target)
+    }
+  }
+
+  hidePlaceholder () {
+    const placeholder = document.querySelector('.placeholder')
+    if (placeholder) {
+      placeholder.remove()
+    }
   }
 
   setName (name) {
