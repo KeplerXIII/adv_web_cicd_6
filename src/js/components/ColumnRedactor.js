@@ -63,7 +63,6 @@ export class ColumnRedactor {
             const tempArray = []
             mouseUpItem.parentElement.querySelectorAll('.task').forEach(element => {
               tempArray.push(element.textContent.slice(1))
-              console.log(tempArray)
               localStorage.setItem(mouseUpItem.parentElement.querySelector('.header').textContent, JSON.stringify(tempArray))
             })
           }
