@@ -36,12 +36,12 @@ export class ColumnRedactor {
 
         actualElement.classList.add('dragged')
 
-        actualElement.style.left = e.pageX - shiftX - 5 + 'px'
-        actualElement.style.top = e.pageY - shiftY - 5 + 'px'
+        actualElement.style.left = e.pageX - shiftX + 'px'
+        actualElement.style.top = e.pageY - shiftY + 'px'
 
         function moveAt (pageX, pageY) {
-          actualElement.style.left = pageX - shiftX - 5 + 'px'
-          actualElement.style.top = pageY - shiftY - 5 + 'px'
+          actualElement.style.left = pageX - shiftX + 'px'
+          actualElement.style.top = pageY - shiftY + 'px'
         }
 
         const onMouseMove = (e) => {
