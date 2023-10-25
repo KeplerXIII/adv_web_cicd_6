@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #31a8cf;
+}
+
+
+.board {
+    display: flex;
+    justify-content: flex-start;
+    margin: 20px;
+}
+
+.column {
+    width: 300px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px #888888;
+    display: inline-flex;
+    flex-direction: column;
+	margin-right: 20px;
+	min-width: 250px;
+	height: max-content;
+}
+
+.column h2 {
+    margin: 0;
+	font-size: 16px;
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 5px 5px 0 0;
+    text-align: left;
+}
+
+.task{
+    position: relative;
+    width: 270px;
+    word-wrap: break-word;
+    /* margin: 5px; */
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.dragged {
+    width: 270px;
+    word-wrap: break-word;
+    position: absolute;
+    z-index: 999;
+    pointer-events: none;
+    /* width: fit-content; */
+    /* pointer-events: auto; */
+}
+
+.input-task {
+    resize: none;
+    position: relative;
+    width: 270px;
+    word-wrap: break-word;
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
+    cursor: text;
+    margin: 5px;
+    padding: 5px;
+}
+
+.close-button {
+    color: #888888;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    display: none;
+  }
+  
+.close-button {
+    display: block;
+  }
+
+.add-task-button {
+	color: #888888;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.button-apply-container {
+	display: flex;
+    justify-content: flex-start;
+}
+
+.apply-button {
+	margin-right: 5px;
+	border-radius: 5px;
+	background: green;
+	color: white;
+}
+
+.cancel-button {
+	border-radius: 5px;
+	background: rgb(141, 25, 25);
+	color: white;
+}
+
+.hidden {
+	display: none;
+}
+
+.placeholder {
+    position: relative;
+    width: 100%;
+    height: 20px; 
+    background-color: #f2f2f2;
+    z-index: 0;
+    transition: height 0.3s;
+    color: transparent;
+  }
