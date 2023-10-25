@@ -47,19 +47,17 @@ export class ColumnRedactor {
         const onMouseMove = (e) => {
           moveAt(e.pageX, e.pageY)
           const underMouseObj = e.target
-          if (document.querySelector('.placeholder')) {
-            this.hidePlaceholder(e)
+          if (!underMouseObj.classList.contains('placeholder')) {
+            this.hidePlaceholder()
           }
-          if (underMouseObj.parentElement && underMouseObj.parentElement.classList.contains('column') && !underMouseObj.classList.contains('header')) {
-            if (!underMouseObj.parentElement.querySelector('.placeholder')) {
-              console.log(underMouseObj.parentElement.querySelector('.placeholder'))
-              this.showPlaceholder(e, height)
-            }
+          if (underMouseObj.parentElement && underMouseObj.parentElement.classList.contains('column') && !underMouseObj.classList.contains('header') && !underMouseObj.classList.contains('placeholder')) {
+            this.showPlaceholder(e, height)
           }
         }
 
         const onMouseUp = (e) => {
           const mouseUpItem = e.target
+          console.log(mouseUpItem)
           if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column') && !mouseUpItem.classList.contains('header')) {
             mouseUpItem.parentElement.insertBefore(actualElement, e.target)
           }
