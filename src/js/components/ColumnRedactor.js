@@ -26,27 +26,40 @@ export class ColumnRedactor {
 
     this.column.addEventListener('mousedown', (e) => {
       let actualElement = e.target
-      if (actualElement && actualElement.classList && actualElement.classList.contains('task') && e.button === 0) {
+      if (actualElement && actualElement.classList && actualElement.classList.contains('task') && !actualElement.classList.contains('input-task') && e.button === 0) {
         e.preventDefault()
+
+        const shiftX = e.clientX - actualElement.getBoundingClientRect().left
+        const shiftY = e.clientY - actualElement.getBoundingClientRect().top
+
         actualElement.classList.add('dragged')
 
-        const onMouseMove = (event) => {
-          actualElement.style.top = event.clientY + 'px'
-          actualElement.style.left = event.clientX + 'px'
+        actualElement.style.left = e.pageX - shiftX - 5 + 'px'
+        actualElement.style.top = e.pageY - shiftY - 5 + 'px'
+
+        function moveAt (pageX, pageY) {
+          actualElement.style.left = pageX - shiftX - 5 + 'px'
+          actualElement.style.top = pageY - shiftY - 5 + 'px'
+        }
+
+        const onMouseMove = (e) => {
+          moveAt(e.pageX, e.pageY)
         }
 
         const onMouseUp = (e) => {
           const mouseUpItem = e.target
+          console.log(mouseUpItem)
           if (mouseUpItem.parentElement && mouseUpItem.parentElement.classList.contains('column')) {
             mouseUpItem.parentElement.insertBefore(actualElement, null)
           }
+          actualElement.style.top = 0 + 'px'
+          actualElement.style.left = 0 + 'px'
           actualElement.classList.remove('dragged')
           document.removeEventListener('mousemove', onMouseMove)
           document.removeEventListener('mouseup', onMouseUp)
-          actualElement.style.top = 0 + 'px'
-          actualElement.style.left = 0 + 'px'
           actualElement = undefined
         }
+
         document.addEventListener('mousemove', onMouseMove)
         document.addEventListener('mouseup', onMouseUp)
       }
@@ -57,7 +70,7 @@ export class ColumnRedactor {
     return `
           <div class="column">
               <h2 class="header">test name</h2>
-              <input class="task input-task hidden" value="default_task">
+              <textarea class="task input-task hidden" style="max-width: 270px; min-width: 270px;">Задачка</textarea>
               <button class="add-task-button">+ Add another card</button>
               <div class="button-apply-container hidden">
                 <button class="apply-button">Add card</button>
